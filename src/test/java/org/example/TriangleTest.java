@@ -1,6 +1,5 @@
 package org.example;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,11 +17,6 @@ public class TriangleTest {
 
     private static final Logger logger = LoggerFactory.getLogger(TriangleTest.class);
 
-    @BeforeEach
-    void setUp() {
-        logger.info("BeforeEach");
-    }
-
 //    @Test
 //    @DisplayName("Обычный тест")
 //    public void areaTriangleTest() {
@@ -39,7 +33,7 @@ public class TriangleTest {
     }
 
     public static Stream<Arguments> wrongTriangles(){
-        return Stream.of(Arguments.of(new Triangle(1,1,10)),
+        return Stream.of(Arguments.of(new Triangle(1,66666661,10)),
                 Arguments.of(new Triangle(1,1000,100)),
                 Arguments.of(new Triangle(3,9000,1))
         );
@@ -56,6 +50,7 @@ public class TriangleTest {
     @ParameterizedTest(name = "{0} area = {1}")
     @MethodSource("triangles")
     public void areaTriangleParamTest(Triangle triangle, double expectedArea) {
+        logger.info("Позитивные проверки");
         double area = triangle.areaTriangle();
         assertEquals(expectedArea, area);
     }
@@ -64,6 +59,7 @@ public class TriangleTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource("wrongTriangles")
     public void areaWrongTriangleTest(Triangle triangle) {
+        logger.info("Неправильные треугольники");
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, triangle::areaTriangle);
         assertEquals("Invalid triangle", illegalArgumentException.getMessage());
     }
@@ -72,6 +68,7 @@ public class TriangleTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource("negativeTriangles")
     public void areaNegativeTriangleTest(Triangle triangle) {
+        logger.info("Отрицательные стороны");
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, triangle::areaTriangle);
         assertEquals("Side(s) is(are) negative", illegalArgumentException.getMessage());
     }
